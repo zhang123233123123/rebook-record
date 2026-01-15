@@ -38,7 +38,7 @@ const CAPTIONS = [
   "Serenity found."
 ];
 
-const REDIRECT_URL = "https://lumalabs.ai/capture/95E52F77-54DB-4DB1-B93B-2DEF6E1CADBA";
+const REDIRECT_URL = "https://lumalabs.ai/capture/DE180D77-1EA7-453A-833E-2D87B81C8A88";
 const REDIRECT_DELAY_MS = 3000;
 const REDIRECT_DELAY_S = REDIRECT_DELAY_MS / 1000;
 
