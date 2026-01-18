@@ -23,7 +23,7 @@ const MEDIA_FILES: MediaItem[] = [
   { file: 'IMG_0573.jpg', type: 'image' },
   { file: 'IMG_0579.jpg', type: 'image' },
   { file: 'IMG_0580.jpg', type: 'image' },
-  { file: 'IMG_0581.MOV', type: 'video' },
+  { file: 'IMG_0581.mp4', type: 'video' },
   { file: 'IMG_0584.jpg', type: 'image' },
   { file: 'IMG_0589.MOV', type: 'video' },
   { file: 'IMG_0590.jpg', type: 'image' },
@@ -31,7 +31,7 @@ const MEDIA_FILES: MediaItem[] = [
   { file: 'IMG_0593.jpg', type: 'image' },
   { file: 'IMG_0604.jpg', type: 'image' },
   { file: 'IMG_0606.jpg', type: 'image' },
-  { file: 'IMG_0607.MOV', type: 'video' },
+  { file: 'IMG_0607.mp4', type: 'video' },
   { file: 'IMG_0609.jpg', type: 'image' },
   { file: 'IMG_0613.jpg', type: 'image' },
   { file: 'IMG_0615.jpg', type: 'image' },
@@ -66,10 +66,10 @@ const MEDIA_FILES: MediaItem[] = [
   { file: 'IMG_0852.jpg', type: 'image' },
   { file: 'IMG_0862.MOV', type: 'video' },
   { file: 'IMG_0867.jpg', type: 'image' },
-  { file: 'IMG_0891.mov', type: 'video' },
-  { file: 'IMG_0949.MOV', type: 'video' },
+  { file: 'IMG_0891.mp4', type: 'video' },
+  { file: 'IMG_0949.mp4', type: 'video' },
   { file: 'IMG_0951.jpg', type: 'image' },
-  { file: 'aa30b24cd9640af44180dda9182b41.MP4', type: 'video' },
+  { file: 'aa30b24cd9640af44180dda9182b41.mp4', type: 'video' },
   
   // 完美结尾 - 飞机窗外的日落
   { file: 'IMG_0946.jpg', type: 'image' }
