@@ -2,17 +2,77 @@ import React, { useState, useEffect, useRef } from 'react';
 import { createRoot } from 'react-dom/client';
 
 // --- Configuration ---
-// Available Images from public/images/
-const IMAGE_FILES = [
-  '4a53f62cb18869dfe0372d3dd6a7aab0.JPG', 'IMG_0535.jpg', 'IMG_0537.jpg', 'IMG_0548.jpg',
-  'IMG_0558.jpg', 'IMG_0573.jpg', 'IMG_0579.jpg', 'IMG_0580.jpg',
-  'IMG_0584.jpg', 'IMG_0590.jpg', 'IMG_0591.jpg', 'IMG_0593.jpg',
-  'IMG_0604.jpg', 'IMG_0606.jpg', 'IMG_0609.jpg', 'IMG_0613.jpg',
-  'IMG_0615.jpg', 'IMG_0619.jpg', 'IMG_0620.jpg', 'IMG_0623.jpg',
-  'IMG_0629.jpg', 'IMG_0633.jpg', 'IMG_0658.jpg', 'IMG_0662.jpg',
-  'IMG_0672.jpg', 'IMG_0675.jpg', 'IMG_0679.jpg', 'IMG_0692.jpg',
-  'IMG_0699.jpg', 'IMG_0709.jpg', 'IMG_0713.jpg', 'IMG_0726.jpg',
-  'IMG_0747.jpg'
+// Media Items (Images and Videos) from public/images/
+interface MediaItem {
+  file: string;
+  type: 'image' | 'video';
+}
+
+const MEDIA_FILES: MediaItem[] = [
+  // 开场照片
+  { file: '03d0d0b482ea959b21478ae173f2733a.JPG', type: 'image' },
+  { file: '085625cbc27bcfe8484e223991735f70.JPG', type: 'image' },
+  { file: '44798113a9b0d04fa0415903069319a1.JPG', type: 'image' },
+  { file: '4a53f62cb18869dfe0372d3dd6a7aab0.JPG', type: 'image' },
+  
+  // 按时间顺序混合图片和视频
+  { file: 'IMG_0535.jpg', type: 'image' },
+  { file: 'IMG_0537.jpg', type: 'image' },
+  { file: 'IMG_0548.jpg', type: 'image' },
+  { file: 'IMG_0558.jpg', type: 'image' },
+  { file: 'IMG_0573.jpg', type: 'image' },
+  { file: 'IMG_0579.jpg', type: 'image' },
+  { file: 'IMG_0580.jpg', type: 'image' },
+  { file: 'IMG_0581.MOV', type: 'video' },
+  { file: 'IMG_0584.jpg', type: 'image' },
+  { file: 'IMG_0589.MOV', type: 'video' },
+  { file: 'IMG_0590.jpg', type: 'image' },
+  { file: 'IMG_0591.jpg', type: 'image' },
+  { file: 'IMG_0593.jpg', type: 'image' },
+  { file: 'IMG_0604.jpg', type: 'image' },
+  { file: 'IMG_0606.jpg', type: 'image' },
+  { file: 'IMG_0607.MOV', type: 'video' },
+  { file: 'IMG_0609.jpg', type: 'image' },
+  { file: 'IMG_0613.jpg', type: 'image' },
+  { file: 'IMG_0615.jpg', type: 'image' },
+  { file: 'IMG_0619.jpg', type: 'image' },
+  { file: 'IMG_0620.jpg', type: 'image' },
+  { file: 'IMG_0623.jpg', type: 'image' },
+  { file: 'IMG_0629.jpg', type: 'image' },
+  { file: 'IMG_0633.jpg', type: 'image' },
+  { file: 'IMG_0658.jpg', type: 'image' },
+  { file: 'IMG_0662.jpg', type: 'image' },
+  { file: 'IMG_0672.jpg', type: 'image' },
+  { file: 'IMG_0675.jpg', type: 'image' },
+  { file: 'IMG_0679.jpg', type: 'image' },
+  { file: 'IMG_0692.jpg', type: 'image' },
+  { file: 'IMG_0699.jpg', type: 'image' },
+  { file: 'IMG_0708.MOV', type: 'video' },
+  { file: 'IMG_0709.jpg', type: 'image' },
+  { file: 'IMG_0713.jpg', type: 'image' },
+  { file: 'IMG_0726.jpg', type: 'image' },
+  { file: 'IMG_0747.jpg', type: 'image' },
+  { file: 'IMG_0765.JPG', type: 'image' },
+  { file: 'IMG_0767.jpg', type: 'image' },
+  { file: 'IMG_0768.jpg', type: 'image' },
+  { file: 'IMG_0785.jpg', type: 'image' },
+  { file: 'IMG_0790.jpg', type: 'image' },
+  { file: 'IMG_0809.jpg', type: 'image' },
+  { file: 'IMG_0810.jpg', type: 'image' },
+  { file: 'IMG_0812.jpg', type: 'image' },
+  { file: 'IMG_0814.jpg', type: 'image' },
+  { file: 'IMG_0832.jpg', type: 'image' },
+  { file: 'IMG_0850.jpg', type: 'image' },
+  { file: 'IMG_0852.jpg', type: 'image' },
+  { file: 'IMG_0862.MOV', type: 'video' },
+  { file: 'IMG_0867.jpg', type: 'image' },
+  { file: 'IMG_0891.mov', type: 'video' },
+  { file: 'IMG_0949.MOV', type: 'video' },
+  { file: 'IMG_0951.jpg', type: 'image' },
+  { file: 'aa30b24cd9640af44180dda9182b41.MP4', type: 'video' },
+  
+  // 完美结尾 - 飞机窗外的日落
+  { file: 'IMG_0946.jpg', type: 'image' }
 ];
 
 // Poetic Captions to cycle through
@@ -46,7 +106,7 @@ const App = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [currentPage, setCurrentPage] = useState(0);
   const [redirectIn, setRedirectIn] = useState<number | null>(null);
-  const totalPages = Math.ceil(IMAGE_FILES.length / 2); // 2 photos per spread (one left, one right)
+  const totalPages = Math.ceil(MEDIA_FILES.length / 2); // 2 items per spread
 
   const handleOpenBook = () => {
     setIsOpen(true);
@@ -86,16 +146,16 @@ const App = () => {
     };
   }, [isOpen, currentPage, totalPages]);
 
-  // Calculate which images to show
-  // Page 0: img 0, img 1
-  // Page 1: img 2, img 3
-  const leftImgIndex = currentPage * 2;
-  const rightImgIndex = currentPage * 2 + 1;
-  const leftImg = IMAGE_FILES[leftImgIndex];
-  const rightImg = IMAGE_FILES[rightImgIndex]; // might be undefined if odd number
+  // Calculate which media to show
+  // Page 0: media 0, media 1
+  // Page 1: media 2, media 3
+  const leftItemIndex = currentPage * 2;
+  const rightItemIndex = currentPage * 2 + 1;
+  const leftItem = MEDIA_FILES[leftItemIndex];
+  const rightItem = MEDIA_FILES[rightItemIndex]; // might be undefined if odd number
 
-  const leftCaption = CAPTIONS[leftImgIndex % CAPTIONS.length];
-  const rightCaption = CAPTIONS[rightImgIndex % CAPTIONS.length];
+  const leftCaption = CAPTIONS[leftItemIndex % CAPTIONS.length];
+  const rightCaption = CAPTIONS[rightItemIndex % CAPTIONS.length];
   const redirectProgress = redirectIn === null ? 0 : (REDIRECT_DELAY_S - redirectIn) / REDIRECT_DELAY_S;
 
   return (
@@ -142,11 +202,30 @@ const App = () => {
                 {/* LEFT PAGE */}
                 <div className="page left-page">
                     <div className="page-inner animate-spread-left">
-                       {leftImg && (
+                       {leftItem && (
                          <div className="photo-entry">
                             <div className="tape-strip top-left"></div>
                             <div className="image-frame">
-                               <img src={`/images/${leftImg}`} alt="Memory"/>
+                               {leftItem.type === 'image' ? (
+                                 <img src={`/images/${leftItem.file}`} alt="Memory"/>
+                               ) : (
+                                 <video 
+                                   controls 
+                                   loop 
+                                   playsInline
+                                   preload="metadata"
+                                   muted
+                                   className="video-player"
+                                   onLoadedMetadata={(e) => {
+                                     const video = e.currentTarget;
+                                     video.currentTime = 0.1;
+                                   }}
+                                 >
+                                   <source src={`/images/${leftItem.file}`} type="video/mp4" />
+                                   <source src={`/images/${leftItem.file}`} type="video/quicktime" />
+                                   您的浏览器不支持视频播放
+                                 </video>
+                               )}
                                <div className="grain-overlay"></div>
                             </div>
                             <div className="handwritten-caption">{leftCaption}</div>
@@ -159,17 +238,36 @@ const App = () => {
                 {/* RIGHT PAGE */}
                 <div className="page right-page">
                     <div className="page-inner animate-spread-right">
-                       {rightImg && (
+                       {rightItem && (
                          <div className="photo-entry controls-overlay-wrapper">
                             <div className="tape-strip top-right"></div>
                             <div className="image-frame">
-                               <img src={`/images/${rightImg}`} alt="Memory"/>
+                               {rightItem.type === 'image' ? (
+                                 <img src={`/images/${rightItem.file}`} alt="Memory"/>
+                               ) : (
+                                 <video 
+                                   controls 
+                                   loop 
+                                   playsInline
+                                   preload="metadata"
+                                   muted
+                                   className="video-player"
+                                   onLoadedMetadata={(e) => {
+                                     const video = e.currentTarget;
+                                     video.currentTime = 0.1;
+                                   }}
+                                 >
+                                   <source src={`/images/${rightItem.file}`} type="video/mp4" />
+                                   <source src={`/images/${rightItem.file}`} type="video/quicktime" />
+                                   您的浏览器不支持视频播放
+                                 </video>
+                               )}
                                <div className="grain-overlay"></div>
                             </div>
                             <div className="handwritten-caption">{rightCaption}</div>
                          </div>
                        )}
-                       {!rightImg && (
+                       {!rightItem && (
                           <div className="end-of-book">
                              <div className="end-text">The End</div>
                           </div>
@@ -415,6 +513,14 @@ const App = () => {
             transition: filter 0.3s;
          }
          .photo-entry:hover img { filter: sepia(0) contrast(1) brightness(1); }
+
+         /* Video Player Styling */
+         .video-player {
+            width: 100%; height: 100%; object-fit: cover;
+            filter: sepia(0.25) contrast(1.1) brightness(0.95);
+            transition: filter 0.3s;
+         }
+         .photo-entry:hover .video-player { filter: sepia(0) contrast(1) brightness(1); }
 
          .handwritten-caption {
              font-family: 'Dancing Script', cursive; font-size: 1.6rem; color: #444;
